@@ -10,7 +10,7 @@ public class Layer {
 
     public Layer(String json) {
         m_list= new Vector<GraphicsObject>();
-        String str = json.replaceAll("\\s+","");
+        String str = json.replaceAll("\\s+", "");
         int objectsIndex = str.indexOf("objects");
         int endIndex = str.lastIndexOf("}");
 
@@ -26,7 +26,17 @@ public class Layer {
     }
 
     public int getObjectNumber() {
-        return m_list.size();
+        int size = 0;
+
+        for (int i = 0; i < m_list.size(); ++i) {
+            if(m_list.elementAt(i) instanceof Group) {
+                Group element = (Group) m_list.elementAt(i);
+                size += element.size();
+            } else {
+                size++;
+            }
+        }
+        return size;
     }
 
     public int getID() {
