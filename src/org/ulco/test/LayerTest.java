@@ -6,7 +6,7 @@ import org.ulco.*;
 public class LayerTest extends TestCase {
     public void testType() throws Exception {
         Document document = new Document();
-        int oldID = ID.ID;
+        int oldID = ID.getInstance().nextId();
         Layer layer = document.createLayer();
 
         layer.add(new Square(new Point(2, 8), 10));
@@ -26,7 +26,7 @@ public class LayerTest extends TestCase {
                 "{ type: circle, center: { type: point, x: 5.0, y: 5.0 }, radius: 4.0 } } }");
     }
 
-    public void testSize() throws Exception {
+    public void testSize3() throws Exception {
         Layer l = new Layer();
         Group g = new Group();
         Square s = new Square(new Point(0,0), 5);
