@@ -7,16 +7,22 @@ public class Rectangle extends GraphicsObject {
         this.m_width = width;
     }
 
-    public Rectangle(String json) {
+    public Rectangle(){
+        this.m_origin = new Point(0,0);
+        this.m_height = 0;
+        this.m_width = 0;
+    }
+
+    public void initObject(String json) {
         String str = json.replaceAll("\\s+","");
         int centerIndex = str.indexOf("center");
         int heightIndex = str.indexOf("height");
         int widthIndex = str.indexOf("width");
         int endIndex = str.lastIndexOf("}");
 
-        m_origin = new Point(str.substring(centerIndex + 7, heightIndex - 1));
-        m_height = Double.parseDouble(str.substring(heightIndex + 7, widthIndex - 1));
-        m_width = Double.parseDouble(str.substring(widthIndex + 6, endIndex));
+        this.m_origin = new Point(str.substring(centerIndex + 7, heightIndex - 1));
+        this.m_height = Double.parseDouble(str.substring(heightIndex + 7, widthIndex - 1));
+        this.m_width = Double.parseDouble(str.substring(widthIndex + 6, endIndex));
     }
 
     public GraphicsObject copy() {
@@ -42,7 +48,7 @@ public class Rectangle extends GraphicsObject {
         return "rectangle[" + m_origin.toString() + "," + m_height + "," + m_width + "]";
     }
 
-    private final Point m_origin;
-    private final double m_height;
-    private final double m_width;
+    private Point m_origin;
+    private double m_height;
+    private double m_width;
 }

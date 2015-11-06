@@ -6,14 +6,19 @@ public class Circle extends GraphicsObject {
         this.m_radius = radius;
     }
 
-    public Circle(String json) {
+    public Circle(){
+        this.m_center = new Point(0,0);
+        this.m_radius = 0;
+    }
+
+    public void initObject(String json) {
         String str = json.replaceAll("\\s+", "");
         int centerIndex = str.indexOf("center");
         int radiusIndex = str.indexOf("radius");
         int endIndex = str.lastIndexOf("}");
 
-        m_center = new Point(str.substring(centerIndex + 7, radiusIndex - 1));
-        m_radius = Double.parseDouble(str.substring(radiusIndex + 7, endIndex));
+        this.m_center = new Point(str.substring(centerIndex + 7, radiusIndex - 1));
+        this.m_radius = Double.parseDouble(str.substring(radiusIndex + 7, endIndex));
     }
 
     public GraphicsObject copy() {
@@ -37,6 +42,6 @@ public class Circle extends GraphicsObject {
         return "circle[" + m_center.toString() + "," + m_radius + "]";
     }
 
-    private final Point m_center;
-    private final double m_radius;
+    private Point m_center;
+    private double m_radius;
 }

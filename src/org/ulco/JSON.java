@@ -5,19 +5,22 @@ public class JSON {
         GraphicsObject o = null;
         String str = json.replaceAll("\\s+", "");
         String type = str.substring(str.indexOf("type") + 5, str.indexOf(","));
+        type = type.substring(0, 1).toUpperCase() + type.substring(1);
+        Class objectClass = null;
 
-        if (type.compareTo("square") == 0) {
-            o = new Square(str);
-        } else if (type.compareTo("rectangle") == 0) {
-            o = new Rectangle(str);
-        } else if (type.compareTo("circle") == 0) {
-            o = new Circle(str);
+        try {
+            objectClass = Class.forName("org.ulco."+type);
+            o = (GraphicsObject) objectClass.newInstance();
+            o.initObject(str);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
-        return o;
-    }
 
-    static public Group parseGroup(String json) {
-        return new Group(json);
+        return o;
     }
 
     static public Layer parseLayer(String json) {

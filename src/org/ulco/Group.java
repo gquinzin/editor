@@ -9,7 +9,7 @@ public class Group extends GraphicsObject{
         m_ID = ++ID.ID;
     }
 
-    public Group(String json) {
+    public void initObject(String json){
         m_objectList = new Vector<GraphicsObject>();
         String str = json.replaceAll("\\s+","");
         int objectsIndex = str.indexOf("objects");
@@ -17,6 +17,7 @@ public class Group extends GraphicsObject{
         int endIndex = str.lastIndexOf("}");
 
         parseObjects(str.substring(objectsIndex + 9, groupsIndex - 2));
+        parseObjects(str.substring(groupsIndex + 8, endIndex - 1));
     }
 
     public void add(GraphicsObject object) {
@@ -151,11 +152,10 @@ public class Group extends GraphicsObject{
                 groupStr += element.toString();
             } else {
                 GraphicsObject element = m_objectList.elementAt(i);
-
-                str += element.toString();
-                if (i < m_objectList.size() - 1) {
+                if (str.compareTo("group[[") != 0) {
                     str += ", ";
                 }
+                str += element.toString();
             }
         }
         str += "],[";
