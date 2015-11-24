@@ -12,9 +12,11 @@ public class Layer {
         m_list= new Vector<GraphicsObject>();
         String str = json.replaceAll("\\s+", "");
         int objectsIndex = str.indexOf("objects");
+        int groupsIndex = str.indexOf("groups");
         int endIndex = str.lastIndexOf("}");
 
-        parseObjects(str.substring(objectsIndex + 9, endIndex - 1));
+        parseObjects(str.substring(objectsIndex + 9, groupsIndex - 2));
+        parseObjects(str.substring(groupsIndex + 8, endIndex - 1));
     }
 
     public void add(GraphicsObject o) {
@@ -89,15 +91,24 @@ public class Layer {
 
     public String toJson() {
         String str = "{ type: layer, objects : { ";
+        String groupStr = "";
 
         for (int i = 0; i < m_list.size(); ++i) {
-            GraphicsObject element = m_list.elementAt(i);
+            if(m_list.elementAt(i) instanceof Group){
+                Group element = (Group) m_list.elementAt(i);
+                groupStr += element.toJson();
+            } else {
+                GraphicsObject element = m_list.elementAt(i);
 
-            str += element.toJson();
-            if (i < m_list.size() - 1) {
-                str += ", ";
+                str += element.toJson();
+                if (i < m_list.size() - 1) {
+                    str += ", ";
+                }
             }
         }
+
+        str += " }, groups : { ";
+        str += groupStr;
         return str + " } }";
     }
 
