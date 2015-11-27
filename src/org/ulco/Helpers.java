@@ -7,11 +7,6 @@ import java.util.Vector;
  */
 public class Helpers {
 
-    public static void initInstance(Vector<GraphicsObject> list, int id){
-        list = new Vector<GraphicsObject>();
-        id = ID.getInstance().nextId();
-    }
-
     public static String toJson(String type, Vector<GraphicsObject> list) {
         String str = "{ type: " + type + ", objects : { ";
         String groupStr = "";
