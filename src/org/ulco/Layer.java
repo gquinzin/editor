@@ -10,13 +10,7 @@ public class Layer {
 
     public Layer(String json) {
         m_list= new Vector<GraphicsObject>();
-        String str = json.replaceAll("\\s+", "");
-        int objectsIndex = str.indexOf("objects");
-        int groupsIndex = str.indexOf("groups");
-        int endIndex = str.lastIndexOf("}");
-
-        parseObjects(str.substring(objectsIndex + 9, groupsIndex - 2));
-        parseObjects(str.substring(groupsIndex + 8, endIndex - 1));
+        Helpers.initObject(json, m_list);
     }
 
     public void add(GraphicsObject o) {
@@ -28,88 +22,15 @@ public class Layer {
     }
 
     public int getObjectNumber() {
-        int size = 0;
-
-        for (int i = 0; i < m_list.size(); ++i) {
-            if(m_list.elementAt(i) instanceof Group) {
-                Group element = (Group) m_list.elementAt(i);
-                size += element.size();
-            } else {
-                size++;
-            }
-        }
-        return size;
+        return Helpers.size(m_list);
     }
 
     public int getID() {
         return m_ID;
     }
 
-    private void parseObjects(String objectsStr) {
-        while (!objectsStr.isEmpty()) {
-            int separatorIndex = searchSeparator(objectsStr);
-            String objectStr;
-
-            if (separatorIndex == -1) {
-                objectStr = objectsStr;
-            } else {
-                objectStr = objectsStr.substring(0, separatorIndex);
-            }
-            m_list.add(JSON.parse(objectStr));
-            if (separatorIndex == -1) {
-                objectsStr = "";
-            } else {
-                objectsStr = objectsStr.substring(separatorIndex + 1);
-            }
-        }
-    }
-
-    private int searchSeparator(String str) {
-        int index = 0;
-        int level = 0;
-        boolean found = false;
-
-        while (!found && index < str.length()) {
-            if (str.charAt(index) == '{') {
-                ++level;
-                ++index;
-            } else if (str.charAt(index) == '}') {
-                --level;
-                ++index;
-            } else if (str.charAt(index) == ',' && level == 0) {
-                found = true;
-            } else {
-                ++index;
-            }
-        }
-        if (found) {
-            return index;
-        } else {
-            return -1;
-        }
-    }
-
     public String toJson() {
-        String str = "{ type: layer, objects : { ";
-        String groupStr = "";
-
-        for (int i = 0; i < m_list.size(); ++i) {
-            if(m_list.elementAt(i) instanceof Group){
-                Group element = (Group) m_list.elementAt(i);
-                groupStr += element.toJson();
-            } else {
-                GraphicsObject element = m_list.elementAt(i);
-
-                str += element.toJson();
-                if (i < m_list.size() - 1) {
-                    str += ", ";
-                }
-            }
-        }
-
-        str += " }, groups : { ";
-        str += groupStr;
-        return str + " } }";
+        return Helpers.toJson("layer", m_list);
     }
 
     public Vector<GraphicsObject> getList(){

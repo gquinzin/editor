@@ -32,10 +32,7 @@ public class Rectangle extends GraphicsObject {
     public Point getOrigin() { return m_origin; }
 
     public boolean isClosed(Point pt, double distance) {
-        Point center = new Point(m_origin.getX() + m_width / 2, m_origin.getY() + m_height / 2);
-
-        return Math.sqrt((center.getX() - pt.getX()) * (center.getX() - pt.getX()) +
-                ((center.getY() - pt.getY()) * (center.getY() - pt.getY()))) <= distance;
+        return Helpers.isClosed(Helpers.getCenterPoint(pt, distance), pt, distance);
     }
 
     void move(Point delta) { m_origin.move(delta); }

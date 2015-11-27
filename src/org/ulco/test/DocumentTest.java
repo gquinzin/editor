@@ -43,8 +43,8 @@ public class DocumentTest extends TestCase {
         l2.add(c2);
         assertEquals(document.toJson(), "{ type: document, layers: { { type: layer, objects : { { type: square, center: " +
                 "{ type: point, x: 0.0, y: 0.0 }, length: 5.0 }, { type: circle, center: { type: point, x: 5.0, y: 5.0 }" +
-                ", radius: 4.0 } } }, { type: layer, objects : { { type: rectangle, center: { type: point, x: -5.0, y: 1.0 }" +
-                ", height: 4.0, width: 2.0 }, { type: circle, center: { type: point, x: -4.0, y: 8.0 }, radius: 1.0 } } } } }");
+                ", radius: 4.0 } }, groups : {  } }, { type: layer, objects : { { type: rectangle, center: { type: point, x: -5.0, y: 1.0 }" +
+                ", height: 4.0, width: 2.0 }, { type: circle, center: { type: point, x: -4.0, y: 8.0 }, radius: 1.0 } }, groups : {  } } } }");
     }
 
     public void testJSON2() throws Exception {
@@ -62,18 +62,18 @@ public class DocumentTest extends TestCase {
         l2.add(c2);
         assertEquals(document.toJson(), "{ type: document, layers: { { type: layer, objects : { { type: square, center: " +
                 "{ type: point, x: 0.0, y: 0.0 }, length: 5.0 }, { type: circle, center: { type: point, x: 5.0, y: 5.0 }" +
-                ", radius: 4.0 } } }, { type: layer, objects : { { type: rectangle, center: { type: point, x: -5.0, y: 1.0 }" +
-                ", height: 4.0, width: 2.0 }, { type: circle, center: { type: point, x: -4.0, y: 8.0 }, radius: 1.0 } } } } }");
+                ", radius: 4.0 } }, groups : {  } }, { type: layer, objects : { { type: rectangle, center: { type: point, x: -5.0, y: 1.0 }" +
+                ", height: 4.0, width: 2.0 }, { type: circle, center: { type: point, x: -4.0, y: 8.0 }, radius: 1.0 } }, groups : {  } } } }");
     }
 
     public void testConstructorGrid() throws Exception {
-        Document document = new Document(new Point(0,0), 3, 3, 5);
+        Document document = Documents.createDocumentGrid(new Point(0, 0), 3, 3, 5);
 
         assertEquals(document.getObjectNumber(), 9);
         assertEquals(document.getLayerNumber(), 1);
     }
 
     public void testConstructorCircle() throws Exception {
-        assertEquals(new Document(new Point(0,0), 4, 3., 4.).getObjectNumber(), 4);
+        assertEquals(Documents.createDocumentCircle(new Point(0,0), 4, 3., 4.).getObjectNumber(), 4);
     }
 }
